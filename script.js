@@ -1,7 +1,12 @@
 const API_URL = "https://estudio-voice-dj.onrender.com";
 
 function showToast(message, type = "info") {
-  const toast = document.createElement("div");
+  let toast = document.getElementById("toast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "toast";
+    document.body.appendChild(toast);
+  }
   toast.innerText = message;
   toast.style.position = "fixed";
   toast.style.bottom = "20px";
@@ -10,29 +15,49 @@ function showToast(message, type = "info") {
   toast.style.borderRadius = "8px";
   toast.style.color = "#fff";
   toast.style.fontWeight = "bold";
-  toast.style.zIndex = "9999";
-  toast.style.boxShadow = "0 4px 12px rgba(0,0,0,0.3)";
-  toast.style.transition = "all 0.3s ease";
+  toast.style.zIndex = "99999";
+  toast.style.boxShadow = "0 4px 14px rgba(0,0,0,0.4)";
+  toast.style.display = "block";
+  toast.style.opacity = "1";
+  toast.style.transition = "opacity 0.3s ease";
 
   if (type === "success") {
     toast.style.background = "#10b981";
   } else if (type === "error") {
     toast.style.background = "#ef4444";
   } else {
-    toast.style.background = "#2563eb";
+    toast.style.background = "#6366f1";
   }
-
-  document.body.appendChild(toast);
 
   setTimeout(() => {
     toast.style.opacity = "0";
-    setTimeout(() => toast.remove(), 300);
-  }, 3500);
+    setTimeout(() => { toast.style.display = "none"; }, 300);
+  }, 4000);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   const textarea = document.querySelector("textarea");
-  const generateBtn = document.querySelector("button#generate-btn") || document.querySelector("button");
+  const charCounter = document.querySelector(".char-counter") || document.querySelector("span:has-text('/1000')") || document.querySelector("div:contains('/1000')");
+
+  // Atualizar contador de carateres ao escrever
+  if (textarea) {
+    textarea.addEventListener("input", () => {
+      const len = textarea.value.length;
+      const counterEl = document.querySelector("div:has(> span)") || charCounter;
+      // Procura qualquer elemento de texto que contenha /1000
+      const allElements = document.querySelectorAll("*");
+      for (const el of allElements) {
+        if (el.children.length === 0 && el.innerText && el.innerText.includes("/1000")) {
+          el.innerText = `${len}/1000`;
+          break;
+        }
+      }
+    });
+  }
+
+  // Identificar qualquer botão de geração de locução na página
+  const buttons = Array.from(document.querySelectorAll("button"));
+  const generateBtn = buttons.find(b => b.innerText.includes("Gerar locução") || b.innerText.includes("Gerar")) || document.querySelector("button#generate-btn") || buttons[0];
 
   if (!generateBtn) return;
 
@@ -49,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const originalText = generateBtn.innerText;
     generateBtn.innerText = "A gerar locução...";
     generateBtn.disabled = true;
-    showToast("A processar a voz na ElevenLabs...", "info");
+    showToast("A ligar ao servidor e à ElevenLabs...", "info");
 
     try {
       const response = await fetch(`${API_URL}/api/voice/generate`, {
@@ -75,20 +100,21 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!downloadLink) {
         downloadLink = document.createElement("a");
         downloadLink.id = "audio-download-link";
-        downloadLink.innerText = "Baixar MP3 da Locução";
+        downloadLink.innerText = "⬇️ Baixar MP3 da Locução";
         downloadLink.style.display = "block";
         downloadLink.style.marginTop = "15px";
         downloadLink.style.color = "#10b981";
         downloadLink.style.fontWeight = "bold";
+        downloadLink.style.textAlign = "center";
         downloadLink.style.textDecoration = "underline";
         generateBtn.parentNode.appendChild(downloadLink);
       }
       downloadLink.href = data.audioUrl;
-      downloadLink.download = "vinheta-dj.mp3";
+      downloadLink.download = "locucao-dj-marcelo.mp3";
 
     } catch (error) {
       console.error(error);
-      showToast(error.message || "Falha na comunicação com o servidor.", "error");
+      showToast(error.message || "Servidor a iniciar. Aguarde 30s e tente de novo.", "error");
     } finally {
       generateBtn.innerText = originalText;
       generateBtn.disabled = false;
