@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ESTUDIO VOICE DJ - Plataforma de criação de locuções profissionais.">
+  <title>ESTUDIO VOICE DJ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">🎙</div>
+        <div>
+          <strong>ESTUDIO</strong>
+          <span>VOICE DJ</span>
+        </div>
+      </div>
+
+      <nav class="menu">
+        <a class="menu-item active" href="#">
+          <span>🏠</span> Início
+        </a>
+        <a class="menu-item" href="#">
+          <span>🎙️</span> Criar locução
+        </a>
+        <a class="menu-item" href="#">
+          <span>🎧</span> Meus áudios
+        </a>
+        <a class="menu-item" href="#">
+          <span>⭐</span> Favoritos
+        </a>
+        <a class="menu-item" href="#">
+          <span>⚙️</span> Configurações
+        </a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="credits">
+          <div class="credits-title">CRÉDITOS</div>
+          <div class="credits-value"><span id="credits">100</span> créditos</div>
+          <div class="progress"><div class="progress-bar"></div></div>
+          <button class="upgrade-btn">Adicionar créditos</button>
+        </div>
+        <div class="user-mini">
+          <div class="avatar">MS</div>
+          <div>
+            <strong>DJ Marcelo</strong>
+            <span>Plano gratuito</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">ESTÚDIO DE ÁUDIO</p>
+          <h1>Olá, Marcelo 👋</h1>
+          <p class="subtitle">Crie locuções profissionais para seus eventos, spots e vinhetas.</p>
+        </div>
+        <button class="profile-btn">MS</button>
+      </header>
+
+      <section class="hero-card">
+        <div>
+          <span class="badge">NOVO ESTÚDIO</span>
+          <h2>Sua voz. Seu estilo.<br>Seu áudio profissional.</h2>
+          <p>Digite seu texto, escolha uma voz e prepare sua próxima produção.</p>
+          <button class="primary-btn" id="startButton">🎙️ Criar nova locução</button>
+        </div>
+        <div class="hero-mic">🎙️</div>
+      </section>
+
+      <section class="studio-grid" id="studio">
+        <div class="studio-card editor-card">
+          <div class="card-header">
+            <div>
+              <span class="section-label">01 · TEXTO</span>
+              <h3>Escreva sua locução</h3>
+            </div>
+            <span class="counter"><span id="charCount">0</span>/1000</span>
+          </div>
+
+          <textarea id="scriptText" maxlength="1000"
+            placeholder="Digite aqui o texto da sua locução...&#10;&#10;Exemplo: Atenção! Preparem-se para uma noite inesquecível..."></textarea>
+
+          <div class="quick-tags">
+            <button data-text="Atenção! Preparem-se para uma experiência inesquecível!">Vinheta</button>
+            <button data-text="Neste sábado, venha curtir uma noite especial com muita música e diversão!">Evento</button>
+            <button data-text="Promoção especial! Aproveite essa oportunidade por tempo limitado.">Comercial</button>
+          </div>
+        </div>
+
+        <div class="studio-card settings-card">
+          <div class="card-header">
+            <div>
+              <span class="section-label">02 · VOZ</span>
+              <h3>Configurações</h3>
+            </div>
+          </div>
+
+          <label for="voice">Voz</label>
+          <select id="voice">
+            <option>Locutor Masculino — Grave</option>
+            <option>Locutor Masculino — Rádio FM</option>
+            <option>Locutora Feminina — Profissional</option>
+            <option>Locutora Feminina — Energética</option>
+          </select>
+
+          <label for="style">Estilo</label>
+          <select id="style">
+            <option>Profissional</option>
+            <option>Comercial</option>
+            <option>Animado</option>
+            <option>Impactante</option>
+            <option>Romântico</option>
+          </select>
+
+          <div class="range-row">
+            <label for="speed">Velocidade <span id="speedValue">1.0x</span></label>
+            <input id="speed" type="range" min="0.7" max="1.3" step="0.1" value="1">
+          </div>
+
+          <button class="generate-btn" id="generateButton">▶ Gerar locução</button>
+          <p class="demo-note">Modo demonstração: o áudio real será conectado na próxima etapa.</p>
+        </div>
+      </section>
+
+      <section class="recent-section">
+        <div class="section-heading">
+          <div>
+            <span class="section-label">PRODUÇÕES</span>
+            <h3>Seus últimos projetos</h3>
+          </div>
+          <button class="text-btn">Ver todos →</button>
+        </div>
+
+        <div class="recent-grid">
+          <div class="recent-card">
+            <div class="audio-icon">🎵</div>
+            <div class="recent-info">
+              <strong>Vinheta DJ Marcelo</strong>
+              <span>Hoje · 00:18</span>
+            </div>
+            <button class="play-small">▶</button>
+          </div>
+          <div class="recent-card">
+            <div class="audio-icon">📢</div>
+            <div class="recent-info">
+              <strong>Spot promocional</strong>
+              <span>Ontem · 00:32</span>
+            </div>
+            <button class="play-small">▶</button>
+          </div>
+          <div class="recent-card">
+            <div class="audio-icon">🎙️</div>
+            <div class="recent-info">
+              <strong>Chamada de evento</strong>
+              <span>02/10 · 00:24</span>
+            </div>
+            <button class="play-small">▶</button>
+          </div>
+        </div>
+      </section>
+
+      <footer>ESTUDIO VOICE DJ · Primeira versão da plataforma</footer>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
