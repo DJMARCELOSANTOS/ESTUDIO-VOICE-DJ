@@ -1,87 +1,99 @@
-const text = document.getElementById('scriptText');
-const charCount = document.getElementById('charCount');
-const speed = document.getElementById('speed');
-const speedValue = document.getElementById('speedValue');
-const toast = document.getElementById('toast');
-const startButton = document.getElementById('startButton');
-const generateButton = document.getElementById('generateButton');
+const API_URL = "https://estudio-voice-dj.onrender.com";
 
-// URL do seu backend ativo no Render
-const BACKEND_URL = 'https://estudio-voice-dj.onrender.com';
+function showToast(message, type = "info") {
+  const toast = document.createElement("div");
+  toast.innerText = message;
+  toast.style.position = "fixed";
+  toast.style.bottom = "20px";
+  toast.style.right = "20px";
+  toast.style.padding = "12px 20px";
+  toast.style.borderRadius = "8px";
+  toast.style.color = "#fff";
+  toast.style.fontWeight = "bold";
+  toast.style.zIndex = "9999";
+  toast.style.boxShadow = "0 4px 12px rgba(0,0,0,0.3)";
+  toast.style.transition = "all 0.3s ease";
 
-function showToast(message){
-  toast.textContent = message;
-  toast.classList.add('show');
-  clearTimeout(window.toastTimer);
-  window.toastTimer = setTimeout(()=>toast.classList.remove('show'), 4000);
+  if (type === "success") {
+    toast.style.background = "#10b981";
+  } else if (type === "error") {
+    toast.style.background = "#ef4444";
+  } else {
+    toast.style.background = "#2563eb";
+  }
+
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    setTimeout(() => toast.remove(), 300);
+  }, 3500);
 }
 
-text.addEventListener('input', ()=>{
-  charCount.textContent = text.value.length;
-});
+document.addEventListener("DOMContentLoaded", () => {
+  const textarea = document.querySelector("textarea");
+  const generateBtn = document.querySelector("button#generate-btn") || document.querySelector("button");
 
-speed.addEventListener('input', ()=>{
-  speedValue.textContent = Number(speed.value).toFixed(1) + 'x';
-});
+  if (!generateBtn) return;
 
-startButton.addEventListener('click', ()=>{
-  document.getElementById('studio').scrollIntoView({behavior:'smooth'});
-  setTimeout(()=>text.focus(), 500);
-});
+  generateBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
 
-document.querySelectorAll('.quick-tags button').forEach(button=>{
-  button.addEventListener('click', ()=>{
-    text.value = button.dataset.text;
-    charCount.textContent = text.value.length;
-    text.focus();
-  });
-});
+    const text = textarea ? textarea.value.trim() : "";
 
-generateButton.addEventListener('click', async ()=>{
-  const content = text.value.trim();
-
-  if(!content){
-    showToast('Digite um texto antes de gerar sua locução.');
-    text.focus();
-    return;
-  }
-
-  // Feedback visual de carregamento
-  generateButton.disabled = true;
-  const originalText = generateButton.textContent;
-  generateButton.textContent = 'A conectar ao backend...';
-  showToast('A enviar solicitação ao ESTÚDIO VOICE DJ...');
-
-  try {
-    const response = await fetch(`${BACKEND_URL}/api/voice/generate`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        text: content,
-        speed: Number(speed.value) || 1
-      })
-    });
-
-    const data = await response.json();
-
-    if (response.ok && data.success) {
-      showToast('Sucesso: Backend conectado e solicitação recebida!');
-    } else {
-      showToast(data.error || 'Ocorreu um erro ao processar a solicitação.');
+    if (!text) {
+      showToast("Por favor, digite o texto da vinheta antes de gerar.", "error");
+      return;
     }
-  } catch (error) {
-    console.error('Erro na ligação com o backend:', error);
-    showToast('Aviso: O backend pode estar a despertar. Tente novamente em alguns segundos.');
-  } finally {
-    generateButton.disabled = false;
-    generateButton.textContent = originalText;
-  }
-});
 
-document.querySelectorAll('.play-small').forEach(button=>{
-  button.addEventListener('click', ()=>{
-    showToast('Player de demonstração — áudio real será conectado em breve.');
+    const originalText = generateBtn.innerText;
+    generateBtn.innerText = "A gerar locução...";
+    generateBtn.disabled = true;
+    showToast("A processar a voz na ElevenLabs...", "info");
+
+    try {
+      const response = await fetch(`${API_URL}/api/voice/generate`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ text })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || "Erro ao gerar áudio.");
+      }
+
+      showToast("Locução gerada com sucesso!", "success");
+
+      // Tocar o áudio gerado
+      const audio = new Audio(data.audioUrl);
+      audio.play();
+
+      // Disponibilizar link/botão para descarregar o ficheiro MP3
+      let downloadLink = document.getElementById("audio-download-link");
+      if (!downloadLink) {
+        downloadLink = document.createElement("a");
+        downloadLink.id = "audio-download-link";
+        downloadLink.innerText = "Baixar MP3 da Locução";
+        downloadLink.style.display = "block";
+        downloadLink.style.marginTop = "15px";
+        downloadLink.style.color = "#10b981";
+        downloadLink.style.fontWeight = "bold";
+        downloadLink.style.textDecoration = "underline";
+        generateBtn.parentNode.appendChild(downloadLink);
+      }
+      downloadLink.href = data.audioUrl;
+      downloadLink.download = "vinheta-dj.mp3";
+
+    } catch (error) {
+      console.error(error);
+      showToast(error.message || "Falha na comunicação com o servidor.", "error");
+    } finally {
+      generateBtn.innerText = originalText;
+      generateBtn.disabled = false;
+    }
   });
 });
