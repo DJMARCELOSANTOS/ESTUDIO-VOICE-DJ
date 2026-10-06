@@ -11,41 +11,33 @@
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand">
-        <div class="brand-mark">🎙</div>
+        <div class="brand-mark">🎙️</div>
         <div>
           <strong>ESTUDIO</strong>
           <span>VOICE DJ</span>
         </div>
       </div>
 
-      <nav class="menu">
-        <a class="menu-item active" href="#">
-          <span>🏠</span> Início
-        </a>
-        <a class="menu-item" href="#">
-          <span>🎙️</span> Criar locução
-        </a>
-        <a class="menu-item" href="#">
-          <span>🎧</span> Meus áudios
-        </a>
-        <a class="menu-item" href="#">
-          <span>⭐</span> Favoritos
-        </a>
-        <a class="menu-item" href="#">
-          <span>⚙️</span> Configurações
-        </a>
+      <nav class="nav-menu">
+        <a href="#studio" class="nav-item active">Criar Locução</a>
+        <a href="#historico" class="nav-item">Produções</a>
       </nav>
 
-      <div class="sidebar-bottom">
-        <div class="credits">
-          <div class="credits-title">CRÉDITOS</div>
-          <div class="credits-value"><span id="credits">100</span> créditos</div>
-          <div class="progress"><div class="progress-bar"></div></div>
-          <button class="upgrade-btn">Adicionar créditos</button>
+      <div class="sidebar-footer">
+        <div class="credits-box">
+          <div class="credits-header">
+            <span>CRÉDITOS</span>
+            <strong id="creditsValue">100 créditos</strong>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 100%;"></div>
+          </div>
+          <button class="btn-secondary" style="margin-top: 10px; width: 100%;">Adicionar créditos</button>
         </div>
-        <div class="user-mini">
+
+        <div class="user-profile">
           <div class="avatar">MS</div>
-          <div>
+          <div class="user-meta">
             <strong>DJ Marcelo</strong>
             <span>Plano gratuito</span>
           </div>
@@ -54,87 +46,75 @@
     </aside>
 
     <main class="main">
-      <header class="topbar">
-        <div>
-          <p class="eyebrow">ESTÚDIO DE ÁUDIO</p>
-          <h1>Olá, Marcelo 👋</h1>
-          <p class="subtitle">Crie locuções profissionais para seus eventos, spots e vinhetas.</p>
-        </div>
-        <button class="profile-btn">MS</button>
-      </header>
-
-      <section class="hero-card">
-        <div>
-          <span class="badge">NOVO ESTÚDIO</span>
-          <h2>Sua voz. Seu estilo.<br>Seu áudio profissional.</h2>
-          <p>Digite seu texto, escolha uma voz e prepare sua próxima produção.</p>
-          <button class="primary-btn" id="startButton">🎙️ Criar nova locução</button>
-        </div>
-        <div class="hero-mic">🎙️</div>
-      </section>
-
       <section class="studio-grid" id="studio">
-        <div class="studio-card editor-card">
-          <div class="card-header">
+        <!-- 01 TEXTO -->
+        <div class="panel">
+          <div class="panel-header">
             <div>
-              <span class="section-label">01 · TEXTO</span>
-              <h3>Escreva sua locução</h3>
+              <span class="step-badge">01 · TEXTO</span>
+              <h2>Escreva sua locução</h2>
             </div>
-            <span class="counter"><span id="charCount">0</span>/1000</span>
+            <span class="char-count" id="charCount">0/1000</span>
           </div>
 
-          <textarea id="scriptText" maxlength="1000"
-            placeholder="Digite aqui o texto da sua locução...&#10;&#10;Exemplo: Atenção! Preparem-se para uma noite inesquecível..."></textarea>
+          <textarea 
+            id="textInput" 
+            placeholder="Digite aqui o texto da sua locução...&#10;&#10;Exemplo: Atenção! Preparem-se para uma noite inesquecível..."
+          ></textarea>
 
-          <div class="quick-tags">
-            <button data-text="Atenção! Preparem-se para uma experiência inesquecível!">Vinheta</button>
-            <button data-text="Neste sábado, venha curtir uma noite especial com muita música e diversão!">Evento</button>
-            <button data-text="Promoção especial! Aproveite essa oportunidade por tempo limitado.">Comercial</button>
+          <div class="tags-row">
+            <button type="button" class="tag-btn" onclick="inserirExemplo('vinheta')">Vinheta</button>
+            <button type="button" class="tag-btn" onclick="inserirExemplo('evento')">Evento</button>
+            <button type="button" class="tag-btn" onclick="inserirExemplo('comercial')">Comercial</button>
           </div>
         </div>
 
-        <div class="studio-card settings-card">
-          <div class="card-header">
+        <!-- 02 VOZ / CONFIGURAÇÕES -->
+        <div class="panel">
+          <div class="panel-header">
             <div>
-              <span class="section-label">02 · VOZ</span>
-              <h3>Configurações</h3>
+              <span class="step-badge">02 · VOZ</span>
+              <h2>Configurações</h2>
             </div>
           </div>
 
-          <label for="voice">Voz</label>
-          <select id="voice">
-            <option>Locutor Masculino — Grave</option>
-            <option>Locutor Masculino — Rádio FM</option>
-            <option>Locutora Feminina — Profissional</option>
-            <option>Locutora Feminina — Energética</option>
-          </select>
+          <div class="form-group">
+            <label for="voiceSelect">Voz</label>
+            <select id="voiceSelect">
+              <option value="Locutor Masculino — Rádio FM">Locutor Masculino — Rádio FM</option>
+              <option value="Locutor Masculino — Grave">Locutor Masculino — Grave</option>
+              <option value="Locutora Feminina — Padrão">Locutora Feminina — Padrão</option>
+            </select>
+          </div>
 
-          <label for="style">Estilo</label>
-          <select id="style">
-            <option>Profissional</option>
-            <option>Comercial</option>
-            <option>Animado</option>
-            <option>Impactante</option>
-            <option>Romântico</option>
-          </select>
+          <div class="form-group">
+            <label for="style">Estilo</label>
+            <select id="style">
+              <option>Profissional</option>
+              <option>Comercial</option>
+              <option>Animado</option>
+              <option>Impactante</option>
+              <option>Romântico</option>
+            </select>
+          </div>
 
           <div class="range-row">
             <label for="speed">Velocidade <span id="speedValue">1.0x</span></label>
-            <input id="speed" type="range" min="0.7" max="1.3" step="0.1" value="1">
+            <input id="speed" type="range" min="0.7" max="1.3" step="0.1" value="1.0" oninput="document.getElementById('speedValue').innerText = this.value + 'x'">
           </div>
 
           <button class="generate-btn" id="generateButton" onclick="gerarLocucaoDJ()">► Gerar locução</button>
-         
+
+          <div id="downloadContainer" style="margin-top: 15px; text-align: center;"></div>
         </div>
       </section>
 
-      <section class="recent-section">
+      <section class="recent-section" id="historico">
         <div class="section-heading">
           <div>
             <span class="section-label">PRODUÇÕES</span>
             <h3>Seus últimos projetos</h3>
           </div>
-          <button class="text-btn">Ver todos →</button>
         </div>
 
         <div class="recent-grid">
@@ -144,23 +124,22 @@
               <strong>Vinheta DJ Marcelo</strong>
               <span>Hoje · 00:18</span>
             </div>
-            <button class="play-small">▶</button>
           </div>
+
           <div class="recent-card">
             <div class="audio-icon">📢</div>
             <div class="recent-info">
               <strong>Spot promocional</strong>
               <span>Ontem · 00:32</span>
             </div>
-            <button class="play-small">▶</button>
           </div>
+
           <div class="recent-card">
             <div class="audio-icon">🎙️</div>
             <div class="recent-info">
               <strong>Chamada de evento</strong>
               <span>02/10 · 00:24</span>
             </div>
-            <button class="play-small">▶</button>
           </div>
         </div>
       </section>
@@ -170,6 +149,108 @@
   </div>
 
   <div class="toast" id="toast"></div>
-  <script src="script.js"></script>
+
+  <!-- SCRIPT INTEGRADO SEM PROBLEMAS DE CACHE -->
+  <script>
+    const API_URL = "https://estudio-voice-dj.onrender.com";
+
+    // Contador de carateres em tempo real
+    const textarea = document.getElementById("textInput");
+    const charCounter = document.getElementById("charCount");
+    if (textarea && charCounter) {
+      textarea.addEventListener("input", () => {
+        charCounter.innerText = `${textarea.value.length}/1000`;
+      });
+    }
+
+    // Função para inserir exemplos nos botões de tags
+    function inserirExemplo(tipo) {
+      if (!textarea) return;
+      if (tipo === 'vinheta') {
+        textarea.value = "DJ Marcelo Santos! O som que comanda a sua pista!";
+      } else if (tipo === 'evento') {
+        textarea.value = "Atenção galera! Vem aí a melhor festa do ano, prepare-se!";
+      } else if (tipo === 'comercial') {
+        textarea.value = "Aproveite as melhores ofertas da semana com qualidade incomparável.";
+      }
+      if (charCounter) charCounter.innerText = `${textarea.value.length}/1000`;
+    }
+
+    // Função de exibição de avisos (toast)
+    function showToast(mensagem, tipo = "info") {
+      let toast = document.getElementById("toast");
+      if (!toast) return;
+      toast.innerText = mensagem;
+      toast.style.position = "fixed";
+      toast.style.bottom = "20px";
+      toast.style.right = "20px";
+      toast.style.padding = "12px 20px";
+      toast.style.borderRadius = "8px";
+      toast.style.color = "#fff";
+      toast.style.fontWeight = "bold";
+      toast.style.zIndex = "99999";
+      toast.style.display = "block";
+      toast.style.background = tipo === "error" ? "#ef4444" : (tipo === "success" ? "#10b981" : "#6366f1");
+
+      setTimeout(() => {
+        toast.style.display = "none";
+      }, 4000);
+    }
+
+    // Função principal de geração
+    async function gerarLocucaoDJ() {
+      const btn = document.getElementById("generateButton");
+      const texto = textarea ? textarea.value.trim() : "";
+      const containerDownload = document.getElementById("downloadContainer");
+
+      if (!texto) {
+        showToast("Digite o texto da sua locução antes de gerar!", "error");
+        return;
+      }
+
+      const textoOriginal = btn.innerHTML;
+      btn.innerText = "⏳ A gerar locução...";
+      btn.disabled = true;
+      showToast("A ligar ao servidor e à ElevenLabs...", "info");
+
+      try {
+        const response = await fetch(`${API_URL}/api/voice/generate`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ text: texto })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || "Erro ao processar áudio na ElevenLabs.");
+        }
+
+        showToast("Locução gerada com sucesso!", "success");
+
+        // Reproduzir áudio
+        const audio = new Audio(data.audioUrl);
+        await audio.play();
+
+        // Botão para descarregar o ficheiro
+        if (containerDownload) {
+          containerDownload.innerHTML = `
+            <a href="${data.audioUrl}" download="locucao-dj-marcelo.mp3" style="display:inline-block; padding:10px 18px; background-color:#10b981; color:#fff; text-decoration:none; border-radius:6px; font-weight:bold;">
+              ⬇️ Baixar Áudio MP3
+            </a>
+          `;
+        }
+
+      } catch (err) {
+        console.error(err);
+        showToast(err.message || "Servidor a iniciar. Aguarde 30s e tente de novo.", "error");
+      } finally {
+        btn.innerHTML = textoOriginal;
+        btn.disabled = false;
+      }
+    }
+  </script>
 </body>
 </html>
