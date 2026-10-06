@@ -68,11 +68,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       showToast("Locução gerada com sucesso!", "success");
 
-      // Tocar o áudio gerado
       const audio = new Audio(data.audioUrl);
       audio.play();
 
-      // Disponibilizar link/botão para descarregar o ficheiro MP3
       let downloadLink = document.getElementById("audio-download-link");
       if (!downloadLink) {
         downloadLink = document.createElement("a");
